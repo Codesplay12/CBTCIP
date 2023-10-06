@@ -1,0 +1,84 @@
+import java.util.Scanner;
+
+class Question {
+    private String question;
+    private String[] options;
+    private int correctOption;
+
+    public Question(String question, String[] options, int correctOption) {
+        this.question = question;
+        this.options = options;
+        this.correctOption = correctOption;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public String[] getOptions() {
+        return options;
+    }
+
+    public int getCorrectOption() {
+        return correctOption;
+    }
+}
+
+class Exam {
+    private Question[] questions;
+    private int score;
+
+    public Exam(Question[] questions) {
+        this.questions = questions;
+        this.score = 0;
+    }
+
+    public void takeExam() {
+        Scanner scanner = new Scanner(System.in);
+
+        for (int i = 0; i < questions.length; i++) {
+            Question question = questions[i];
+
+            System.out.println("Question " + (i + 1) + ": " + question.getQuestion());
+            String[] options = question.getOptions();
+            for (int j = 0; j < options.length; j++) {
+                System.out.println((char) ('A' + j) + ". " + options[j]);
+            }
+
+            System.out.print("Your choice: ");
+            char userChoice = scanner.nextLine().toUpperCase().charAt(0);
+
+            int userOption = userChoice - 'A';
+            if (userOption >= 0 && userOption < options.length) {
+                if (userOption == question.getCorrectOption()) {
+                    score++;
+                }
+            } else {
+                System.out.println("Invalid choice. Skipping question.");
+            }
+        }
+
+        System.out.println("Exam completed. Your score: " + score);
+    }
+}
+
+public class OnlineExamSystem {
+    public static void main(String[] args) {
+        Question[] questions = {
+                new Question("What is the capital of France?",
+                        new String[]{"Paris", "London", "Berlin", "Madrid"},
+                        0),
+
+                new Question("What is 2 + 2?",
+                        new String[]{"3", "4", "5", "6"},
+                        1),
+
+                new Question("Which planet is known as the Red Planet?",
+                        new String[]{"Mars", "Jupiter", "Venus", "Saturn"},
+                        0)
+        };
+
+        Exam exam = new Exam(questions);
+        exam.takeExam();
+    }
+}
